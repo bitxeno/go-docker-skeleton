@@ -86,7 +86,6 @@ jobs:
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           generate_release_notes: true
           body: ${{ steps.changelog.outputs.clean_changelog }}
-          append_body: true
           fail_on_unmatched_files: true
 
       # step 7.1: push to DockerHub
