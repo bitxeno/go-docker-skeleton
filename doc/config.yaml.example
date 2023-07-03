@@ -1,0 +1,4 @@
+server:
+  log: /data/app.log
+app:
+  test: "test"
