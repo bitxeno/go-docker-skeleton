@@ -73,7 +73,7 @@ jobs:
       # step 6: Upload binary to GitHub Release
       - name: Generate Changelog
         id: changelog
-        uses: bitxeno/changelogithub-action@master
+        uses: bitxeno/changelogithub-action@v0.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
