@@ -78,6 +78,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           # types: |
+          #   feat
           #   fix
           #   perf
           #   refactor
