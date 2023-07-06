@@ -12,7 +12,7 @@ RUN echo "I'm building for $TARGETPLATFORM"
 RUN apk add -U tzdata
 
 # add 指令会自动解压文件
-COPY ./doc/config.yaml.example /doc/config.yaml
+COPY ./docs/config.yaml.example /docs/config.yaml
 COPY ./build/${APP_NAME}-${TARGETOS}-${TARGETARCH} /usr/bin/${APP_NAME}
 RUN chmod +x /usr/bin/${APP_NAME}
 
@@ -20,7 +20,7 @@ RUN chmod +x /usr/bin/${APP_NAME}
 RUN printf '#!/bin/sh \n\n\
 
 if [ ! -f "/data/config.yaml" ]; then  \n\
-    cp /doc/config.yaml /data/config.yaml \n\
+    cp /docs/config.yaml /data/config.yaml \n\
 fi  \n\
 
 /usr/bin/%s server -p ${SERVICE_PORT:-80} -c /data/config.yaml  \n\

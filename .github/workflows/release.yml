@@ -46,6 +46,7 @@ jobs:
           echo "APP_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_OUTPUT
           echo "REPO=$(echo 'github.com/${{ github.repository }}')" >> $GITHUB_OUTPUT
           echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_OUTPUT
+          echo "BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
           if [ ! -z $DOCKER_TOKEN ]; then echo "HAS_DOCKER_TOKEN=${HAS_DOCKER_TOKEN}" >> $GITHUB_OUTPUT; fi
         env:
@@ -77,7 +78,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
-          output-file: ./doc/CHANGELOG.md
+          output-file: ./docs/CHANGELOG.md
           types: |
             feat
             fix
@@ -95,9 +96,9 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          add: "doc/"
-          message: "chore(release): Release ${{ github.ref_name }}"
-          push: origin HEAD:master
+          add: "docs/"
+          message: "docs: release notes for ${{ github.ref_name }}"
+          push: "origin HEAD:${{steps.vars.outputs.BRANCH}}"
 
       # step 7: Upload binary to GitHub Release
       - name: Upload binary to GitHub Release
