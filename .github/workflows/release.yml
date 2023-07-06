@@ -70,26 +70,36 @@ jobs:
       - name: Compress build files
         run: cd ./build && for i in *; do tar -czf $i.tar.gz $i; done && cd ..
 
-      # step 6: Upload binary to GitHub Release
+      # step 6: Generate Changelog
       - name: Generate Changelog
         id: changelog
         uses: bitxeno/changelogithub-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+          output-file: ./doc/CHANGELOG.md
           types: |
             feat
             fix
             perf
             refactor
+            tweak
           #   docs
           #   build
           #   test
           #   style
           #   ci
           #   chore
-          #   types
-          #   examples
+          #   improve
+      - name: Git commit changelog
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          add: "doc/"
+          message: "chore(release): Release ${{ github.ref_name }}"
+          push: origin HEAD:master
+
+      # step 7: Upload binary to GitHub Release
       - name: Upload binary to GitHub Release
         uses: softprops/action-gh-release@v1
         if: "startsWith(github.ref, 'refs/tags/')"
@@ -97,10 +107,10 @@ jobs:
           files: |
             ./build/*.tar.gz
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}\
-          body: ${{ steps.changelog.outputs.summary }}
+          body: ${{ steps.changelog.outputs.changelog }}
           fail_on_unmatched_files: true
 
-      # step 7.1: push to DockerHub
+      # step 8.1: push to DockerHub
       - name: Login to DockerHub
         if: ${{ steps.vars.outputs.HAS_DOCKER_TOKEN == 'true' }}
         uses: docker/login-action@v2
@@ -121,7 +131,7 @@ jobs:
             BUILDDATE=${{steps.vars.outputs.BUILDDATE}}
             COMMIT=${{steps.vars.outputs.COMMIT}}
 
-      # step 7.2: push to GitHub Container Registry
+      # step 8.2: push to GitHub Container Registry
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
