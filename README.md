@@ -1,4 +1,9 @@
-# go-docker-skeleton [![license](https://img.shields.io/badge/license-Apache%202-blue?style=flat)](https://github.com/bitxeno/go-docker-skeleton/blob/master/LICENSE)[![version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/bitxeno/go-docker-skeleton/releases)
+# go-docker-skeleton
+
+[![release](https://ghcr-badge.egpl.dev/bitxeno/go-docker-skeleton/latest_tag?label=docker%20latest)](https://github.com/bitxeno/go-docker-skeleton/pkgs/container/go-docker-skeleton)
+[![image size](https://ghcr-badge.egpl.dev/bitxeno/go-docker-skeleton/size)](https://github.com/bitxeno/go-docker-skeleton/pkgs/container/go-docker-skeleton)
+[![license](https://img.shields.io/github/license/bitxeno/go-docker-skeleton)](https://github.com/bitxeno/go-docker-skeleton/blob/master/LICENSE) 
+
 Skeleton for run go service in docker
 
 
