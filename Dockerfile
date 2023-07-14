@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM:-linux/amd64} gcr.io/distroless/static:debug
+FROM frolvlad/alpine-glibc:alpine-3.14 AS builder
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
@@ -27,6 +27,11 @@ fi  \n\
 \n\
 ' ${APP_NAME} >> /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+
+FROM --platform=${BUILDPLATFORM:-linux/amd64} gcr.io/distroless/static:debug
+COPY --from=builder ["/usr/bin/${APP_NAME}", "/usr/bin/${APP_NAME}"]
+COPY --from=builder ["/entrypoint.sh", "/entrypoint.sh"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 # docker 启动不了，需要进入 docker 测试时使用本命令
