@@ -9,8 +9,6 @@ jobs:
   # generate build cross-platform build files
   release:
     name: Generate cross-platform builds
-    permissions:
-      contents: write
     strategy:
       matrix:
         go_version: [1.18.x]
