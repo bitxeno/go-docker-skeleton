@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-glibc:alpine-3.14 AS builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} pingcap/alpine-glibc:alpine-3.14.6-gcompat
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
@@ -9,7 +9,7 @@ ARG TARGETARCH
 RUN echo "I'm building for $TARGETPLATFORM"
 
 # 安装tzdata支持更新时区
-# RUN apk add -U tzdata
+RUN apk add -U tzdata
 
 # add 指令会自动解压文件
 COPY ./docs/config.yaml.example /docs/config.yaml
@@ -17,7 +17,7 @@ COPY ./build/${APP_NAME}-${TARGETOS}-${TARGETARCH} /usr/bin/${APP_NAME}
 RUN chmod +x /usr/bin/${APP_NAME}
 
 # 生成启动脚本
-RUN printf '#!/busybox/sh \n\n\
+RUN printf '#!/bin/sh \n\n\
 
 if [ ! -f "/data/config.yaml" ]; then  \n\
     cp /docs/config.yaml /data/config.yaml \n\
@@ -27,11 +27,6 @@ fi  \n\
 \n\
 ' ${APP_NAME} >> /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
-
-FROM --platform=${BUILDPLATFORM:-linux/amd64} gcr.io/distroless/static:debug
-COPY --from=builder ["/usr/bin/${APP_NAME}", "/usr/bin/${APP_NAME}"]
-COPY --from=builder ["/entrypoint.sh", "/entrypoint.sh"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 # docker 启动不了，需要进入 docker 测试时使用本命令
