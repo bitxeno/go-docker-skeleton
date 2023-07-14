@@ -17,7 +17,7 @@ COPY ./build/${APP_NAME}-${TARGETOS}-${TARGETARCH} /usr/bin/${APP_NAME}
 RUN chmod +x /usr/bin/${APP_NAME}
 
 # 生成启动脚本
-RUN printf '#!/bin/sh \n\n\
+RUN printf '#!/busybox/sh \n\n\
 
 if [ ! -f "/data/config.yaml" ]; then  \n\
     cp /docs/config.yaml /data/config.yaml \n\
