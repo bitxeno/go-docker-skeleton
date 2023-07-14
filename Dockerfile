@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM:-linux/amd64} frolvlad/alpine-glibc:alpine-3.14
+FROM --platform=${BUILDPLATFORM:-linux/amd64} gcr.io/distroless/static:debug
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
@@ -9,7 +9,7 @@ ARG TARGETARCH
 RUN echo "I'm building for $TARGETPLATFORM"
 
 # 安装tzdata支持更新时区
-RUN apk add -U tzdata
+# RUN apk add -U tzdata
 
 # add 指令会自动解压文件
 COPY ./docs/config.yaml.example /docs/config.yaml
