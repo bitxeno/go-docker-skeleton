@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM:-linux/amd64} gcr.io/distroless/static:latest
+FROM --platform=${BUILDPLATFORM:-linux/amd64} frolvlad/alpine-glibc:alpine-3.14
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
