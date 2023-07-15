@@ -1,4 +1,4 @@
-FROM forumi0721/alpine-glibc:latest
+FROM frolvlad/alpine-glibc:latest
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
