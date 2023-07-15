@@ -6,12 +6,10 @@ on:
 
 # jobs
 jobs:
-  # generate build cross-platform build files
-  release:
+  beta:
     name: Generate cross-platform builds
     permissions:
       contents: write
-      packages: write
     strategy:
       matrix:
         go_version: [1.18.x]
@@ -70,6 +68,13 @@ jobs:
           path: build
           retention-days: 7
 
+  docker_beta:
+    name: Release docker image
+    needs: needs: [beta]
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
       # step 7.2: push to GitHub Container Registry
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
