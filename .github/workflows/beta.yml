@@ -44,6 +44,10 @@ jobs:
           echo "REPO=$(echo 'github.com/${{ github.repository }}')" >> $GITHUB_ENV
           echo "BRANCH=${{ steps.metadata.outputs.repository_default_branch }}" >> $GITHUB_ENV
 
+          if [ ! -z $DOCKER_TOKEN ]; then echo "HAS_DOCKER_TOKEN=1" >> $GITHUB_ENV; fi
+        env:
+          DOCKER_TOKEN: "${{ secrets.DOCKER_TOKEN }}"
+
       # step 4: generate build files
       - name: build frontend
         run: cd ./view && npm install && npm run build
