@@ -12,6 +12,7 @@ jobs:
     name: Generate cross-platform builds
     permissions:
       contents: write
+      packages: write
     strategy:
       matrix:
         go_version: [1.18.x]

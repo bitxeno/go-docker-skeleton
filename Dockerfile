@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM:-linux/amd64} pingcap/alpine-glibc:alpine-3.14.6-gcompat
+FROM pingcap/alpine-glibc:alpine-3.14.6-gcompat
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
