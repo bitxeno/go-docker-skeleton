@@ -70,7 +70,7 @@ jobs:
 
   docker_beta:
     name: Release docker image
-    needs: needs: [beta]
+    needs: [beta]
     permissions:
       packages: write
     runs-on: ubuntu-latest
