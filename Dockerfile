@@ -1,4 +1,4 @@
-FROM pingcap/alpine-glibc:alpine-3.14.6-gcompat
+FROM alpine:3.18
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
