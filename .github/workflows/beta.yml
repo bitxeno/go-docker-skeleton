@@ -10,6 +10,7 @@ jobs:
     name: Generate cross-platform builds
     permissions:
       contents: write
+      packages: write
     strategy:
       matrix:
         go_version: [1.18.x]
@@ -32,19 +33,16 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       # step 3: set workflow variables
-      - name: Initialize workflow variables
-        id: vars
+      - id: metadata
+        uses: ahmadnassri/action-metadata@v2
+      - name: Initialize workflow environments variables
         run: |
-          echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_OUTPUT
-          echo "BUILDDATE=$(date '+%F-%T')" >> $GITHUB_OUTPUT
-          echo "COMMIT=$(git rev-parse --verify HEAD)" >> $GITHUB_OUTPUT
-          echo "APP_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_OUTPUT
-          echo "REPO=$(echo 'github.com/${{ github.repository }}')" >> $GITHUB_OUTPUT
-          echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_OUTPUT
-
-          if [ ! -z $DOCKER_TOKEN ]; then echo "HAS_DOCKER_TOKEN=${HAS_DOCKER_TOKEN}" >> $GITHUB_OUTPUT; fi
-        env:
-          DOCKER_TOKEN: "${{ secrets.DOCKER_TOKEN }}"
+          echo "VERSION='${{ github.ref_name }}'" >> $GITHUB_ENV
+          echo "BUILDDATE=$(date '+%F-%T')" >> $GITHUB_ENV
+          echo "COMMIT=$(git rev-parse --verify HEAD)" >> $GITHUB_ENV
+          echo "APP_NAME='${{ steps.metadata.outputs.repository_name }}'" >> $GITHUB_ENV
+          echo "REPO='github.com/${{ github.repository }}'" >> $GITHUB_ENV
+          echo "BRANCH='${{ steps.metadata.outputs.repository_default_branch }}'" >> $GITHUB_ENV
 
       # step 4: generate build files
       - name: build frontend
@@ -55,26 +53,19 @@ jobs:
           xgo_version: latest
           go_version: ${{ matrix.go_version }}
           dest: build
-          prefix: ${{steps.vars.outputs.APP_NAME}}
-          targets: linux/amd64,linux/arm64
+          prefix: ${{env.APP_NAME}}
+          targets: windows/amd64,linux/amd64,darwin/amd64,linux/arm64
           v: true
           x: false
-          ldflags: -w -s -X ${{steps.vars.outputs.REPO}}/internal/version.Version=${{steps.vars.outputs.VERSION}} -X ${{steps.vars.outputs.REPO}}/internal/version.BuildDate=${{steps.vars.outputs.BUILDDATE}} -X ${{steps.vars.outputs.REPO}}/internal/version.Commit=${{steps.vars.outputs.COMMIT}} -X ${{steps.vars.outputs.REPO}}/internal/mode.Mode=production
+          ldflags: -w -s -X ${{env.REPO}}/internal/version.Version=${{env.VERSION}} -X ${{env.REPO}}/internal/version.BuildDate=${{env.BUILDDATE}} -X ${{env.REPO}}/internal/version.Commit=${{env.COMMIT}} -X ${{env.REPO}}/internal/mode.Mode=production
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{steps.vars.outputs.APP_NAME}}
+          name: ${{env.APP_NAME}}
           path: build
           retention-days: 7
 
-  docker_beta:
-    name: Release docker image
-    needs: [beta]
-    permissions:
-      packages: write
-    runs-on: ubuntu-latest
-    steps:
       # step 7.2: push to GitHub Container Registry
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -92,11 +83,11 @@ jobs:
         with:
           context: .
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           tags: ghcr.io/${{ github.repository }}:beta
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            APP_NAME=${{steps.vars.outputs.APP_NAME}}
-            VERSION=${{steps.vars.outputs.VERSION}}
-            BUILDDATE=${{steps.vars.outputs.BUILDDATE}}
-            COMMIT=${{steps.vars.outputs.COMMIT}}
+            APP_NAME=${{env.APP_NAME}}
+            VERSION=${{env.VERSION}}
+            BUILDDATE=${{env.BUILDDATE}}
+            COMMIT=${{env.COMMIT}}
