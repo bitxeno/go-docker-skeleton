@@ -6,15 +6,20 @@ on:
 
 # jobs
 jobs:
-  beta:
+  build:
     name: Generate cross-platform builds
     permissions:
       contents: write
-      packages: write
     strategy:
       matrix:
         go_version: [1.18.x]
     runs-on: ubuntu-latest
+    outputs:
+      VERSION: ${{steps.vars.outputs.VERSION}}
+      BUILDDATE: ${{steps.vars.outputs.BUILDDATE}}
+      COMMIT: ${{steps.vars.outputs.COMMIT}}
+      APP_NAME: ${{steps.vars.outputs.APP_NAME}}
+      PUSH_DOCKERHUB: ${{steps.vars.outputs.PUSH_DOCKERHUB}}
     steps:
       # step 1: checkout repository code
       - name: Checkout the repository
@@ -36,17 +41,14 @@ jobs:
       - id: metadata
         uses: ahmadnassri/action-metadata@v2
       - name: Initialize workflow environments variables
+        id: vars
         run: |
-          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
-          echo "BUILDDATE=$(date '+%F-%T')" >> $GITHUB_ENV
-          echo "COMMIT=$(git rev-parse --verify HEAD)" >> $GITHUB_ENV
-          echo "APP_NAME=${{ steps.metadata.outputs.repository_name }}" >> $GITHUB_ENV
-          echo "REPO=$(echo 'github.com/${{ github.repository }}')" >> $GITHUB_ENV
-          echo "BRANCH=${{ steps.metadata.outputs.repository_default_branch }}" >> $GITHUB_ENV
-
-          if [ ! -z $DOCKER_TOKEN ]; then echo "HAS_DOCKER_TOKEN=1" >> $GITHUB_ENV; fi
-        env:
-          DOCKER_TOKEN: "${{ secrets.DOCKER_TOKEN }}"
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "BUILDDATE=$(date '+%F-%T')" >> $GITHUB_OUTPUT
+          echo "COMMIT=$(git rev-parse --verify HEAD)" >> $GITHUB_OUTPUT
+          echo "APP_NAME=${{ steps.metadata.outputs.repository_name }}" >> $GITHUB_OUTPUT
+          echo "REPO=$(echo 'github.com/${{ github.repository }}')" >> $GITHUB_OUTPUT
+          echo "BRANCH=${{ steps.metadata.outputs.repository_default_branch }}" >> $GITHUB_OUTPUT
 
       # step 4: generate build files
       - name: build frontend
@@ -57,20 +59,36 @@ jobs:
           xgo_version: latest
           go_version: ${{ matrix.go_version }}
           dest: build
-          prefix: ${{env.APP_NAME}}
+          prefix: ${{steps.vars.outputs.APP_NAME}}
           targets: windows/amd64,linux/amd64,darwin/amd64,linux/arm64
           v: true
           x: false
-          ldflags: -w -s -X ${{env.REPO}}/internal/version.Version=${{env.VERSION}} -X ${{env.REPO}}/internal/version.BuildDate=${{env.BUILDDATE}} -X ${{env.REPO}}/internal/version.Commit=${{env.COMMIT}} -X ${{env.REPO}}/internal/mode.Mode=production
+          ldflags: -w -s -X ${{steps.vars.outputs.REPO}}/internal/version.Version=${{steps.vars.outputs.VERSION}} -X ${{steps.vars.outputs.REPO}}/internal/version.BuildDate=${{steps.vars.outputs.BUILDDATE}} -X ${{steps.vars.outputs.REPO}}/internal/version.Commit=${{steps.vars.outputs.COMMIT}} -X ${{steps.vars.outputs.REPO}}/internal/mode.Mode=production
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{env.APP_NAME}}
+          name: ${{steps.vars.outputs.APP_NAME}}
           path: build
           retention-days: 7
 
-      # step 7.2: push to GitHub Container Registry
+  ghcr:
+    name: Push to GitHub Container Registry
+    needs: [build]
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{needs.build.outputs.APP_NAME}}
+          path: build
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: build
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -88,10 +106,10 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64
-          tags: ghcr.io/${{ github.repository }}:beta
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            APP_NAME=${{env.APP_NAME}}
-            VERSION=${{env.VERSION}}
-            BUILDDATE=${{env.BUILDDATE}}
-            COMMIT=${{env.COMMIT}}
+            APP_NAME=${{needs.build.outputs.APP_NAME}}
+            VERSION=${{needs.build.outputs.VERSION}}
+            BUILDDATE=${{needs.build.outputs.BUILDDATE}}
+            COMMIT=${{needs.build.outputs.COMMIT}}
