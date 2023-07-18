@@ -106,7 +106,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/${{ github.repository }}:beta
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             APP_NAME=${{needs.build.outputs.APP_NAME}}
