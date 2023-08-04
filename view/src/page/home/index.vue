@@ -1,8 +1,10 @@
 <template>
   <div>
     <div class="flex flex-col w-full border-opacity-50">
-      <div class="grid h-20 card bg-base-300 rounded-box place-items-center">
-        <WelcomeIcon />Hello daisyUI
+      <div class="grid card bg-base-300 rounded-box place-items-center">
+        <WelcomeIcon />Hello daisyUI <IconAirplaneLanding /><IconAppFilled
+          style="font-size: 2em; color: red"
+        />
       </div>
     </div>
     <div class="overflow-x-auto">
@@ -37,6 +39,8 @@
 <script>
 import dayjs from "dayjs";
 import api from "@/api/api";
+import IconAirplaneLanding from "~icons/fluent/airplane-landing-24-regular";
+import IconAppFilled from "~icons/fluent/apps-24-filled";
 
 export default {
   name: "Home",
