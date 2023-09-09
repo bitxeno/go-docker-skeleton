@@ -9,7 +9,6 @@ jobs:
   build:
     name: Generate cross-platform builds
     permissions:
-      contents: read
       contents: write
     strategy:
       matrix:
