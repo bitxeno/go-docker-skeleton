@@ -9,6 +9,7 @@ jobs:
   build:
     name: Generate cross-platform builds
     permissions:
+      contents: read
       contents: write
     strategy:
       matrix:
@@ -76,6 +77,7 @@ jobs:
     name: Push to GitHub Container Registry
     needs: [build]
     permissions:
+      contents: read
       packages: write
     runs-on: ubuntu-latest
     steps:
