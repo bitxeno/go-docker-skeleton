@@ -1,4 +1,5 @@
 server:
+  work_dir: /data
   log: /data/app.log
 app:
   test: "test"
