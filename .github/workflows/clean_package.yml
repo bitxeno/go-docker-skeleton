@@ -30,7 +30,7 @@ jobs:
           image-names: ${{steps.vars.outputs.APP_NAME}}
           cut-off: A week ago UTC
           keep-at-least: 2
-          skip-tags: latest
+          skip-tags: latest, beta, alpha
           account-type: personal
           token: ${{ secrets.PAT }}
       # - name: Remove old artifacts
