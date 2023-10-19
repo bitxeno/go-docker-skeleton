@@ -114,3 +114,15 @@ jobs:
             VERSION=${{needs.build.outputs.VERSION}}
             BUILDDATE=${{needs.build.outputs.BUILDDATE}}
             COMMIT=${{needs.build.outputs.COMMIT}}
+
+  clean:
+    name: Delete temp artifacts
+    needs: [build, ghcr]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: ${{needs.build.outputs.APP_NAME}}
+          failOnError: false
