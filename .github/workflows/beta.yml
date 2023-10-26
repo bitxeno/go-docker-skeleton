@@ -117,7 +117,6 @@ jobs:
 
   clean:
     name: Delete temp artifacts
-    if: ${{ always() }}
     needs: [build, ghcr]
     permissions:
       contents: write

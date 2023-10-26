@@ -203,7 +203,8 @@ jobs:
 
   clean:
     name: Delete temp artifacts
-    if: ${{ always() }}
+    # ignore dockerhub job skipped
+    if: always() && (needs.dockerhub.result == 'success' || needs.dockerhub.result == 'skipped') && (needs.ghcr.result == 'success')
     needs: [build, dockerhub, ghcr]
     permissions:
       contents: write
