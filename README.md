@@ -69,7 +69,7 @@ DOCKER_REPOSITORY
 docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/dir:/data xxxx/app-name
 ```
 
-## Great library
+## Awesome library
 
 * [validator](https://github.com/go-playground/validator): Package validator implements value validations for structs and individual fields based on tags.
 * [lo](https://github.com/samber/lo): samber/lo is a Lodash-style Go library based on Go 1.18+ Generics.
