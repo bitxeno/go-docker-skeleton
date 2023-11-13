@@ -62,6 +62,8 @@ jobs:
         run: cd ./view && npm install && npm run build
       - name: Generate build files
         uses: crazy-max/ghaction-xgo@v2
+        env:
+          CGO_ENABLED: "0"
         with:
           xgo_version: latest
           go_version: ${{ matrix.go_version }}

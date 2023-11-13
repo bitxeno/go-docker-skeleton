@@ -8,7 +8,7 @@ import (
 	"github.com/bitxeno/go-docker-skeleton/internal/cfg"
 	"github.com/bitxeno/go-docker-skeleton/internal/log"
 	"github.com/bitxeno/go-docker-skeleton/internal/mode"
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
