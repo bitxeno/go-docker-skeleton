@@ -13,7 +13,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        go_version: [1.18.x]
+        go_version: [1.21.x]
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{steps.vars.outputs.VERSION}}
@@ -194,6 +194,7 @@ jobs:
         with:
           context: .
           push: true
+          provenance: false
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

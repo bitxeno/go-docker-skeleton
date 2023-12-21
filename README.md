@@ -9,7 +9,7 @@ Skeleton for run go service in docker
 
 ## Prerequisite
 
-* Go 1.8+
+* Go 1.21+
 * Node.js 14+
 * Vue3 + daisyUI
 
