@@ -26,7 +26,7 @@ jobs:
         run: cd ./view && npm install && npm run build
       - uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.53.2
+          version: v1.55
           args: --out-format=colored-line-number --timeout=5m
       - run: go mod download
       - run: go test -coverprofile=coverage.txt -covermode=atomic ./...
