@@ -79,6 +79,7 @@ docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/di
 * [gocron](https://github.com/go-co-op/gocron): Easy and fluent Go cron scheduling.
 * [gjson](https://github.com/tidwall/gjson): Get JSON values quickly - JSON parser for Go
 * [ristretto](https://github.com/dgraph-io/ristretto): A high performance memory-bound Go cache
+* [theine-go](https://github.com/Yiling-J/theine-go): High performance in-memory & hybrid cache with generics support
 * [goutil](https://github.com/gookit/goutil): Helper Utils(600+)
 * [emitter](https://github.com/olebedev/emitter): Emits events in Go way, with wildcard, predicates, cancellation possibilities and many other good wins
 * [event](https://github.com/gookit/event): Lightweight event manager and dispatcher implements by Go
