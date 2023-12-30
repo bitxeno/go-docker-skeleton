@@ -69,7 +69,7 @@ DOCKER_REPOSITORY
 docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/dir:/data xxxx/app-name
 ```
 
-## Awesome library
+## Awesome Go Library
 
 * [validator](https://github.com/go-playground/validator): Package validator implements value validations for structs and individual fields based on tags.
 * [lo](https://github.com/samber/lo): samber/lo is a Lodash-style Go library based on Go 1.18+ Generics.
@@ -85,3 +85,8 @@ docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/di
 * [event](https://github.com/gookit/event): Lightweight event manager and dispatcher implements by Go
 * [asynq](https://github.com/hibiken/asynq): Simple, reliable, and efficient distributed task queue in Go
 * [goja](https://github.com/dop251/goja): ECMAScript/JavaScript engine in pure Go
+
+## Awesome Javascript Library
+
+* [vue-sonner](https://github.com/xiaoluoboding/vue-sonner): 🔔 An opinionated toast component for Vue.
+* [auto-animate](https://github.com/formkit/auto-animate): A zero-config, drop-in animation utility that adds smooth transitions to your web app.
