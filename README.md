@@ -86,6 +86,8 @@ docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/di
 * [asynq](https://github.com/hibiken/asynq): Simple, reliable, and efficient distributed task queue in Go
 * [goja](https://github.com/dop251/goja): ECMAScript/JavaScript engine in pure Go
 * [do](https://github.com/samber/do): ⚙️ A dependency injection toolkit based on Go 1.18+ Generics.
+* [errors](https://github.com/go-errors/errors): errors with stacktraces for go
+* [purego](https://github.com/ebitengine/purego): A library for calling C functions from Go without Cgo.
 
 ## Awesome Javascript Library
 
