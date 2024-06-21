@@ -4,7 +4,9 @@ import (
 	"path/filepath"
 
 	"github.com/bitxeno/go-docker-skeleton/internal/cfg"
+	"github.com/bitxeno/go-docker-skeleton/internal/db"
 	"github.com/bitxeno/go-docker-skeleton/internal/log"
+	"github.com/bitxeno/go-docker-skeleton/internal/model"
 	"github.com/creasty/defaults"
 )
 
@@ -72,9 +74,9 @@ func InitLogger(conf *Configuration) error {
 }
 
 func InitDb(conf *Configuration) error {
-	// if err := db.Open(conf.Db).AutoMigrate(&model.User{}); err != nil {
-	// 	return err
-	// }
+	if err := db.Open(conf.Db).AutoMigrate(&model.User{}); err != nil {
+		return err
+	}
 
 	return nil
 }
