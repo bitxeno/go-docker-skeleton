@@ -64,7 +64,7 @@ func (c *configuration) BindStruct(dst any) error {
 }
 
 func (c *configuration) Reload() {
-	c.load("")
+	_ = c.load("")
 }
 
 func (c *configuration) PrintConfig() {
