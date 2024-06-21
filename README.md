@@ -20,18 +20,15 @@ Skeleton for run go service in docker
 3. update `AppName` and `AppDesc` variables in `main.go`
 4. execute shell:
 ```shell
-cd view
-npm install
-cd ..
-go mod vendor
-
 # open shell #1:
 # for frontend hot reload
-cd view
+cd web/static
+npm install
 npm run dev
 
 # open shell #2:
-go run -tags dev . server
+go mod tidy
+go run . server -vv
 # or hot reload
 go get -u https://github.com/cosmtrek/air
 air -c .air.toml
@@ -40,9 +37,9 @@ air -c .air.toml
 ## How to integrated with **vue-admin-template**
 
 ```
-rm -rf view
-git clone --depth=1 https://github.com/PanJiaChen/vue-admin-template.git view
-cd view
+rm -rf web/static
+git clone --depth=1 https://github.com/PanJiaChen/vue-admin-template.git web/static
+cd web/static
 rm -rf ./.git
 npm install
 ```
