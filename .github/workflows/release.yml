@@ -59,7 +59,7 @@ jobs:
 
       # step 4: generate build files
       - name: build frontend
-        run: cd ./view && npm install && npm run build
+        run: cd ./web/static && npm install && npm run build
       - name: Generate build files
         uses: crazy-max/ghaction-xgo@v2
         env:
@@ -151,7 +151,7 @@ jobs:
           images: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
       - name: Build and push Docker images to DockerHub
         if: ${{ steps.vars.outputs.HAS_DOCKER_TOKEN }}
-        uses:docker/build-push-action@v5
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
