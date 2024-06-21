@@ -74,6 +74,12 @@ func InitLogger(conf *Configuration) error {
 }
 
 func InitDb(conf *Configuration) error {
+	if conf.Db.Path == "" {
+		conf.Db.Path = conf.Server.DataDir
+	}
+	if conf.Db.Path == "" {
+		conf.Db.Path = cfg.DefaultConfigDir()
+	}
 	if err := db.Open(conf.Db).AutoMigrate(&model.User{}); err != nil {
 		return err
 	}
