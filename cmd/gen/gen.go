@@ -1,11 +1,11 @@
-package cmd
+package gen
 
 import (
 	"github.com/urfave/cli/v2"
 )
 
 var (
-	genFlags = []cli.Flag{
+	flags = []cli.Flag{
 		&cli.StringFlag{
 			Name:     "config",
 			Aliases:  []string{"c"},
@@ -14,15 +14,15 @@ var (
 		},
 	}
 
-	genCommand = &cli.Command{
+	Command = &cli.Command{
 		Name:   "gen",
 		Usage:  "Generate example server code",
-		Flags:  genFlags,
-		Action: generateAction,
+		Flags:  flags,
+		Action: action,
 	}
 )
 
-func generateAction(c *cli.Context) error {
+func action(c *cli.Context) error {
 	// if utils.Exists(app.ConfigFilePath) {
 	// 	fmt.Printf("Config has exist. >>> %s\n", app.ConfigFilePath)
 	// 	return nil

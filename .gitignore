@@ -17,7 +17,8 @@
 vendor/
 tmp/
 dist/
-build/
+view/build/
+web/build/
 node_modules/
 go-docker-skeleton
 main

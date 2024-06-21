@@ -1,4 +1,4 @@
-package router
+package web
 
 type ApiResult struct {
 	Code int         `json:"code"`

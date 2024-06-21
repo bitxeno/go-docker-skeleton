@@ -1,14 +1,31 @@
-name: "🚀 Release"
+name: "🚀 Release Nightly"
 
 # on events
 on:
+  schedule:
+    - cron: '0 0 * * *' # runs daily at 00:00
+  workflow_dispatch:
   push:
-    tags: ["v*"]
+    branches: [main, master, release/v*]
 
 # jobs
 jobs:
+  check:
+    name: Check has new commits today
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get new commits
+        run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_OUTPUT
+
   build:
     name: Generate cross-platform builds
+    if: ${{needs.check.outputs.NEW_COMMIT_COUNT > 0}}
     permissions:
       contents: write
     strategy:

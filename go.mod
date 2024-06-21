@@ -6,6 +6,7 @@ require (
 	github.com/creasty/defaults v1.5.2
 	github.com/fatih/color v1.9.0
 	github.com/glebarez/sqlite v1.10.0
+	github.com/go-errors/errors v1.5.1
 	github.com/go-resty/resty/v2 v2.6.0
 	github.com/gofiber/contrib/websocket v1.0.0
 	github.com/gofiber/fiber/v2 v2.46.0

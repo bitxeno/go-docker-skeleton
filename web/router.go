@@ -1,26 +1,25 @@
-package router
+package web
 
 import (
-	"io/fs"
 	"log"
 	"net/http"
 
-	"github.com/bitxeno/go-docker-skeleton/config"
+	"github.com/bitxeno/go-docker-skeleton/internal/app"
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 )
 
-func Create(app *fiber.App, f fs.FS) {
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root: http.FS(f),
+func route(fi *fiber.App) {
+	fi.Use("/", filesystem.New(filesystem.Config{
+		Root: http.FS(StaticAssets()),
 	}))
-	app.Get("/hello", func(c *fiber.Ctx) error {
+	fi.Get("/hello", func(c *fiber.Ctx) error {
 		return c.Status(200).SendString("hello world.")
 	})
 
 	// websocket router
-	app.Use("/ws", func(c *fiber.Ctx) error {
+	fi.Use("/ws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
 		// requested upgrade to the WebSocket protocol.
 		if websocket.IsWebSocketUpgrade(c) {
@@ -29,7 +28,7 @@ func Create(app *fiber.App, f fs.FS) {
 		}
 		return fiber.ErrUpgradeRequired
 	})
-	app.Get("/ws/:id", websocket.New(func(c *websocket.Conn) {
+	fi.Get("/ws/:id", websocket.New(func(c *websocket.Conn) {
 		log.Println(c.Params("id")) // 123
 		log.Println(c.Query("v"))   // 1.0
 
@@ -53,20 +52,23 @@ func Create(app *fiber.App, f fs.FS) {
 	}))
 
 	// api router
-	api := app.Group("/api")
+	api := fi.Group("/api")
 	api.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("hello world.")
 	})
 	api.Get("/setting", func(c *fiber.Ctx) error {
-		return c.JSON(apiSuccess(config.Settings))
+		return c.JSON(apiSuccess(app.Settings))
 	})
 	api.Post("/setting", func(c *fiber.Ctx) error {
-		var setting config.SettingsConfiguration
+		var setting app.SettingsConfiguration
 		if err := c.BodyParser(&setting); err != nil {
 			return c.JSON(apiError("Invalid argument. error: " + err.Error()))
 		}
 
-		config.SaveSettings()
+		// update settings
+		app.Settings.Test = setting.Test
+		app.SaveSettings()
+
 		return c.JSON(apiSuccess(true))
 	})
 }

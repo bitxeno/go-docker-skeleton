@@ -5,9 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/bitxeno/go-docker-skeleton/internal/cfg"
 	"github.com/bitxeno/go-docker-skeleton/internal/log"
-	"github.com/bitxeno/go-docker-skeleton/internal/mode"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -18,10 +16,11 @@ var instance *sqliteDb
 type sqliteDb struct {
 	db   *gorm.DB
 	path string
+	conf Config
 }
 
-func new() *sqliteDb {
-	dbDir := cfg.Server.WorkDir
+func new(conf Config) *sqliteDb {
+	dbDir := conf.Path
 	if _, err := os.Stat(dbDir); err != nil {
 		if err := os.MkdirAll(dbDir, os.ModePerm); err != nil {
 			panic("failed to create database directory")
@@ -29,7 +28,8 @@ func new() *sqliteDb {
 	}
 
 	return &sqliteDb{
-		path: filepath.Join(dbDir, "app.db"),
+		path: filepath.Join(dbDir, conf.FileName),
+		conf: conf,
 	}
 }
 
@@ -44,7 +44,7 @@ func (s *sqliteDb) Open() *sqliteDb {
 	}
 
 	conf := &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)}
-	if mode.Get() == mode.DevelopmentMode {
+	if s.conf.Debug {
 		conf.Logger = logger.Default.LogMode(logger.Info)
 	}
 
@@ -79,14 +79,8 @@ func Store() *gorm.DB {
 	return instance.db
 }
 
-func Open() *sqliteDb {
-	instance = new().Open()
-
-	return instance
-}
-
-func OpenDb(path string) *sqliteDb {
-	instance = new().SetPath(path).Open()
+func Open(conf Config) *sqliteDb {
+	instance = new(conf).Open()
 
 	return instance
 }
