@@ -19,7 +19,7 @@ jobs:
       new_commit_count: ${{steps.commit_check.outputs.new_commit_count}}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: Check for new commits
@@ -45,7 +45,7 @@ jobs:
     steps:
       # step 1: checkout repository code
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -153,7 +153,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -194,7 +194,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
