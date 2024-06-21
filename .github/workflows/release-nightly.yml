@@ -15,17 +15,20 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    outputs:
+      new_commit_count: ${{steps.commit_check.outputs.new_commit_count}}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
-      - name: Get new commits
-        run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_OUTPUT
+      - name: Check for new commits
+        id: commit_check
+        run: echo "new_commit_count=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_OUTPUT
 
   build:
     name: Generate cross-platform builds
-    if: ${{needs.check.outputs.NEW_COMMIT_COUNT > 0}}
+    if: ${{needs.check.outputs.new_commit_count > 0}}
     needs: [check]
     permissions:
       contents: write
