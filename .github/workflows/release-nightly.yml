@@ -136,8 +136,9 @@ jobs:
         with:
           context: .
           push: true
+          provenance: false
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKER_REPOSITORY }}:${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             APP_NAME=${{needs.build.outputs.APP_NAME}}
@@ -181,7 +182,7 @@ jobs:
           push: true
           provenance: false
           platforms: linux/amd64
-          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             APP_NAME=${{needs.build.outputs.APP_NAME}}
