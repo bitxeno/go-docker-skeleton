@@ -23,6 +23,9 @@ func InitConfig(path string, debug bool) (*Configuration, error) {
 	if err := c.BindStruct(&configuration); err != nil {
 		return nil, err
 	}
+	if configuration.Server.DataDir == "" {
+		configuration.Server.DataDir = cfg.DefaultConfigDir()
+	}
 	Config = &configuration
 
 	if debug {
@@ -62,7 +65,13 @@ func InitSettings(conf *Configuration, debug bool) error {
 }
 
 func InitLogger(conf *Configuration) error {
-	// set normal log
+	if conf.Log.LogFile == "" {
+		if conf.Server.DataDir != "" {
+			conf.Log.LogFile = filepath.Join(conf.Server.DataDir, "app.log")
+		} else {
+			conf.Log.LogFile = filepath.Join(cfg.DefaultConfigDir(), "app.log")
+		}
+	}
 	log.AddFileOutput(conf.Log.LogFile)
 	if conf.Log.Level == "debug" {
 		log.SetDebugLevel()
