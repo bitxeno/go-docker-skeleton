@@ -28,7 +28,7 @@ jobs:
 
   build:
     name: Generate cross-platform builds
-    if: ${{needs.check.outputs.new_commit_count > 0}}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check.outputs.new_commit_count > 0}}
     needs: [check]
     permissions:
       contents: write
