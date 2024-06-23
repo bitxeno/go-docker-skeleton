@@ -1,5 +1,5 @@
 # TODO: 支持arm64: https://github.com/sgerrand/alpine-pkg-glibc/issues/126
-FROM frolvlad/alpine-glibc:glibc-2.34
+FROM woahbase/alpine-glibc:2.39
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
