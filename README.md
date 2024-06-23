@@ -29,8 +29,8 @@ npm run dev
 # open shell #2:
 go mod tidy
 go run . server -vv
-# or hot reload
-go get -u https://github.com/cosmtrek/air
+# or hot reload with go 1.22+
+go install github.com/air-verse/air@latest
 air -c .air.toml
 ```
 
