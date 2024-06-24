@@ -85,6 +85,7 @@ docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/di
 * [do](https://github.com/samber/do): ⚙️ A dependency injection toolkit based on Go 1.18+ Generics.
 * [errors](https://github.com/go-errors/errors): errors with stacktraces for go
 * [purego](https://github.com/ebitengine/purego): A library for calling C functions from Go without Cgo.
+* [go-i18n](https://github.com/nicksnyder/go-i18n): Translate your Go program into multiple languages
 
 ## Awesome Javascript Library
 
