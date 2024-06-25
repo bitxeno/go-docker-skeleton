@@ -124,7 +124,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to DockerHub
-        if: ${{ steps.vars.outputs.HAS_DOCKER_TOKEN }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -135,7 +134,6 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
       - name: Build and push Docker images to DockerHub
-        if: ${{ steps.vars.outputs.HAS_DOCKER_TOKEN }}
         uses: docker/build-push-action@v5
         with:
           context: .
