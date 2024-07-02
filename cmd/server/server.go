@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/bitxeno/go-docker-skeleton/internal/app"
 	"github.com/bitxeno/go-docker-skeleton/web"
+	"github.com/fatih/color"
 	"github.com/urfave/cli/v2"
 )
 
@@ -72,9 +73,15 @@ func action(c *cli.Context) error {
 		return err
 	}
 
+	printVersion()
 	port := conf.Server.Port
 	if c.Int("port") > 0 {
 		port = c.Int("port")
 	}
 	return web.Run(conf.Server.ListenAddr, port)
+}
+
+func printVersion() {
+	color.New(color.FgGreen).Print("Starting server version: ")
+	color.New(color.FgCyan).Printf("%s@%s@%v\n", app.Version.Version, app.Version.BuildDate, app.Mode)
 }
