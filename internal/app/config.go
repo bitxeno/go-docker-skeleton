@@ -20,7 +20,7 @@ type Configuration struct {
 		ListenAddr string `koanf:"listen_addr" default:"0.0.0.0"`
 		Port       int    `koanf:"port" default:"9000"`
 		DataDir    string `koanf:"data_dir"`
-	} `koanf:"app" json:"app"`
+	} `koanf:"server" json:"server"`
 
 	Db db.Config `koanf:"db" json:"db"`
 }
