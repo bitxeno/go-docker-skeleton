@@ -1,7 +1,6 @@
 package app
 
 import (
-	"io/ioutil"
 	"math"
 	"os"
 	"time"
@@ -36,7 +35,7 @@ func startSaveSettingsJob(settingsPath string) {
 			}
 
 			data := utils.ToIndentJSON(Settings)
-			if err := ioutil.WriteFile(settingsPath, data, os.ModePerm); err != nil {
+			if err := os.WriteFile(settingsPath, data, os.ModePerm); err != nil {
 				log.Err(err).Msg("Save settings error.")
 			} else {
 				log.Infof("Save settings success. %s", settingsPath)
