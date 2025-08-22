@@ -91,3 +91,5 @@ docker run -d --name=app-name --restart=always -p 8080:80  -v /path/to/config/di
 
 * [vue-sonner](https://github.com/xiaoluoboding/vue-sonner): 🔔 An opinionated toast component for Vue.
 * [auto-animate](https://github.com/formkit/auto-animate): A zero-config, drop-in animation utility that adds smooth transitions to your web app.
+* [vue-bits](https://github.com/DavidHDev/vue-bits): About
+An open source collection of animated, interactive & fully customizable Vue components.

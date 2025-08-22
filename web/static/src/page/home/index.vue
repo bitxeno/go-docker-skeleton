@@ -2,9 +2,7 @@
   <div>
     <div class="flex flex-col w-full border-opacity-50">
       <div class="grid card bg-base-300 rounded-box place-items-center">
-        <WelcomeIcon />Hello daisyUI <IconAirplaneLanding /><IconAppFilled
-          style="font-size: 2em; color: red"
-        />
+        <WelcomeIcon />Hello daisyUI
       </div>
     </div>
     <div class="overflow-x-auto">
@@ -30,6 +28,13 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="flex flex-col w-full border-opacity-50">
+      <div class="grid card bg-base-300 rounded-box place-items-center">
+        <IconAirplaneLanding /><IconAppFilled
+          style="font-size: 2em; color: red"
+        />
+      </div>
     </div>
   </div>
 </template>
