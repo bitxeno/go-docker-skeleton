@@ -9,7 +9,7 @@ require (
 	github.com/go-errors/errors v1.5.1
 	github.com/go-resty/resty/v2 v2.6.0
 	github.com/gofiber/contrib/websocket v1.0.0
-	github.com/gofiber/fiber/v2 v2.52.9
+	github.com/gofiber/fiber/v2 v2.52.11
 	github.com/json-iterator/go v1.1.12
 	github.com/knadh/koanf v1.5.0
 	github.com/rs/zerolog v1.25.0
