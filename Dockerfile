@@ -1,5 +1,4 @@
-# TODO: 支持arm64: https://github.com/sgerrand/alpine-pkg-glibc/issues/126
-FROM woahbase/alpine-glibc:2.39
+FROM sirmark/golang:1.26-alpine-glibc2.42
 ARG APP_NAME
 ARG VERSION
 ARG BUILDDATE
